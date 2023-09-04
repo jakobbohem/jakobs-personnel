@@ -15,7 +15,7 @@ def read_markdown_file(filename):
         return file.read()
 
 # Read data from markdown file
-data = read_markdown_file('employees.md')
+data = read_markdown_file('data/employees.md')
 
 # Split data by lines and initialize an empty list to store Person objects
 lines = data.strip().split('\n')
@@ -44,9 +44,10 @@ for i, line in enumerate(lines[3:], start=3):  # Skip headers
 
         person = Person(name_ado_id, role, github_username, email)
         persons.append(person)
-    else:
-        print(f"Data on line {i} could not be parsed.")
+    # else:
+    #     print(f"Data on line {i} could not be parsed.")
 
 # Display extracted data
 for person in persons:
     print(person)
+

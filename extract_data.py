@@ -1,12 +1,15 @@
 import re
+from person import *
+import address_book
+from data_accessor import DataAccessor
 
-class Person:
-    def __init__(self, github_username, name, role, company, email=None):
-        self.github_username = github_username
-        self.name = name
-        self.role = role
-        self.company = company
-        self.email = email
+# class Person:
+#     def __init__(self, github_username, name, role, company, email=None):
+#         self.github_username = github_username
+#         self.name = name
+#         self.role = role
+#         self.company = company
+#         self.email = email
 
 def extract_person_data(table_text, company_name):
     persons = []
@@ -28,7 +31,7 @@ def extract_person_data(table_text, company_name):
                 else:
                     name = name_ado.strip()
 
-            person = Person(github_username.strip(), name, role.strip(), company_name, email)
+            person = Person(name, role.strip(), email, github_username.strip(), "[]", company_name)
             persons.append(person)
     
     return persons
@@ -63,13 +66,19 @@ def extract_person_data_from_tables(markdown_text):
     return persons
 
 def main():
-    md_file_path = "data/employees.md"
+    # TODO: allow input args to set the source file path
+    md_file_path = "rawdata/Team-github-reference.md"
 
     with open(md_file_path, "r") as md_file:
         markdown_text = md_file.read()
 
     # Split the markdown into separate tables
-    extract_person_data_from_tables(markdown_text)
+    addressBook = address_book.AddressBook()
+    addressBook.append(extract_person_data_from_tables(markdown_text))
+
+    # note: requires using the same database file, always
+    db = DataAccessor("data/address_book.db")
+    db.save_to_database(addressBook)
 
 if __name__ == '__main__':
     main()

@@ -31,6 +31,20 @@
         "request": "launch",
         "program": "${workspaceFolder}/lookup.py",
         "args": ["--search-github", "johndoe"]
+      },
+      {
+        "name": "default (global) search",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/lookup.py",
+        "args": ["--search", "Jakob"]
+      },
+      {
+        "name": "extract data (update db)",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/extract_data.py",
+        "args": []
       }
     ]
   }
