@@ -9,3 +9,7 @@ class Person:
 
     def match_field(self, field, value):
         return str(getattr(self, field)).lower() == value.lower()
+    
+    def __str__(self):
+        email = f" ({self.email})" if self.email else ""
+        return f"{self.name}: [{self.github}]{email} at {self.employer} | {self.role}"

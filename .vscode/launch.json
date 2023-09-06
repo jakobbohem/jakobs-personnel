@@ -37,7 +37,7 @@
         "type": "python",
         "request": "launch",
         "program": "${workspaceFolder}/lookup.py",
-        "args": ["--search", "Jakob"]
+        "args": ["Jakob "]
       },
       {
         "name": "extract data (update db)",

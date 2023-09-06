@@ -34,32 +34,36 @@ def main():
     parser = argparse.ArgumentParser(description="Address Book CLI")
     parser.add_argument("--list", action="store_true", help="List all entries in the address book")
     parser.add_argument("--roles", action="store_true", help="List all available roles")
-    parser.add_argument("--search-name", help="Search for an entry by name")
-    parser.add_argument("--search-github", help="Search for an entry by GitHub username")
+    parser.add_argument("-v", "--verbose", action="store_true", help="Print all matching person data (default is only github username, for scripting")
+    parser.add_argument("--search-name", action="store_true", help="Search for an entry by name")
+    parser.add_argument("--search-github", action = "store_true", help="Search for an entry by GitHub username")
     # TODO: let this be the DEFAULT option
-    parser.add_argument("--search", help="Search for partial matches in name, email, and github-username")
+    parser.add_argument("query", nargs="?", default="", help="Search for partial matches in name, email, and github-username")
     
     args = parser.parse_args()
 
     # init data
-    db = DataAccessor('data/adress_book.db')
+    db = DataAccessor('data/address_book.db')
     address_book = db.load_from_database()
 
     if args.list:
         print_address_book(address_book)
     elif args.roles:
         print_roles(address_book)
-    elif args.search:
-        results = address_book.search(*args.search.split())
+    elif args.query:
+        results = address_book.search(*args.query.split())
 
         if results:
             print("Matches: ")
             for person in results:
-                print("gh:", person.github_username)
+                if args.verbose:
+                    print(person)
+                else:
+                    print(person.github)
         else:
             print("No matching entries found.")
     elif args.search_name:
-        results = address_book.search_field("name", args.search_name)
+        results = address_book.search_field("name", *args.query.split())
         print("Search by name: ")
         if results:
             for person in results:
@@ -67,7 +71,7 @@ def main():
         else:
             print("No matching entries found.")
     elif args.search_github:
-        results = address_book.search_field("github", args.search_github)
+        results = address_book.search_field("github", *args.query.split())
         print("Search by GitHub username: ")
         if results:
             for person in results:
