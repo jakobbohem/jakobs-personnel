@@ -54,7 +54,6 @@ def main():
         results = address_book.search(*args.query.split())
 
         if results:
-            print("Matches: ")
             for person in results:
                 if args.verbose:
                     print(person)
