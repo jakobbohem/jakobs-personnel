@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+
 import re
 from person import *
 import address_book

@@ -1,11 +1,14 @@
-import sqlite3
+import sqlite3, sys
 from person import Person
+from pathlib import Path
 from address_book import AddressBook
 
-class DataAccessor:
+def get_absolute(dbfile):
+    return str(Path(sys.argv[0]).parent.absolute() / dbfile)
 
+class DataAccessor:
     def __init__(self, dbfile):
-        self.dbfile = dbfile
+        self.dbfile = get_absolute(dbfile)
 
         conn = sqlite3.connect(self.dbfile)
         c = conn.cursor()
