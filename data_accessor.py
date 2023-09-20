@@ -28,7 +28,7 @@ class DataAccessor:
 
         c.execute("DELETE FROM persons")
 
-        for person in address_book.contacts:
+        for person in address_book.contacts():
             c.execute("INSERT INTO persons VALUES (?, ?, ?, ?, ?, ?)",
                     (person.name, person.role, person.email, person.github, person.work_area, person.employer))
 

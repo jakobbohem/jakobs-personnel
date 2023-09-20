@@ -14,12 +14,12 @@ class AddressBookDuplicatesTests(unittest.TestCase):
     def test_add_contact_duplicate_email(self):
         person3 = Person("Alice Johnson", "Designer", "jane.smith@example.com", "alicej", "UI/UX Design", "Design Co.")
         self.address_book.add_contact(person3)
-        self.assertEqual(len(self.address_book.contacts), 2)
+        self.assertEqual(len(self.address_book.contacts()), 2)
 
     def test_add_contact_unique_email(self):
         person4 = Person("Bob Brown", "Developer", "bob.brown@example.com", "bobb", "Web Development", "Web Dev Inc.")
         self.address_book.add_contact(person4)
-        self.assertEqual(len(self.address_book.contacts), 3)
+        self.assertEqual(len(self.address_book.contacts()), 3)
 
 if __name__ == '__main__':
     unittest.main()

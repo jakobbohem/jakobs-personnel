@@ -21,10 +21,10 @@ class TestExtractPersonData(unittest.TestCase):
         self.assertEqual(len(persons), len(expected_results))
         
         for i in range(len(persons)):
-            self.assertEqual(persons[i].github_username, expected_results[i][0])
+            self.assertEqual(persons[i].github, expected_results[i][0])
             self.assertEqual(persons[i].name, expected_results[i][1])
             self.assertEqual(persons[i].role, expected_results[i][2])
-            self.assertIn(persons[i].company, ["Company employees", "SPRUNG Employees"])  # Verify company name
+            self.assertIn(persons[i].employer, ["Company employees", "SPRUNG Employees"])  # Verify company name
 
 if __name__ == '__main__':
     unittest.main()
