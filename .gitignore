@@ -1,3 +1,7 @@
+# ignore rawdata folder with proprietary information
+data/address_book.db
+rawdata/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

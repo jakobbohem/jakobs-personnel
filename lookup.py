@@ -1,7 +1,9 @@
+#! /usr/bin/env python
+
 import argparse
-import sqlite3
 from person import Person
 from address_book import AddressBook
+from data_accessor import DataAccessor
 
 
 def print_address_book(address_book):
@@ -17,75 +19,51 @@ def print_roles(address_book):
     for role in roles:
         print(role)
 
-
-def initialize_database():
-    conn = sqlite3.connect("address_book.db")
-    c = conn.cursor()
-
-    c.execute('''CREATE TABLE IF NOT EXISTS persons
-                (name TEXT, role TEXT, email TEXT, github TEXT, work_area TEXT, employer TEXT)''')
-
-    conn.commit()
-    conn.close()
-
-
-def save_to_database(address_book):
-    conn = sqlite3.connect("address_book.db")
-    c = conn.cursor()
-
-    c.execute("DELETE FROM persons")
-
-    for person in address_book.contacts:
-        c.execute("INSERT INTO persons VALUES (?, ?, ?, ?, ?, ?)",
-                  (person.name, person.role, person.email, person.github, person.work_area, person.employer))
-
-    conn.commit()
-    conn.close()
-
-
-def load_from_database():
-    conn = sqlite3.connect("address_book.db")
-    c = conn.cursor()
-
-    c.execute("SELECT * FROM persons")
-    rows = c.fetchall()
-
-    address_book = AddressBook()
-
-    for row in rows:
-        person = Person(*row)
-        address_book.add_contact(person)
-
-    conn.close()
-
-    return address_book
-
+def search_persons(address_book, search_term):
+    matching_github_usernames = []
+    search_term = search_term.lower()
+    
+    for person in address_book.persons():
+        if (search_term in person.name.lower() or
+            search_term in person.email.lower() if person.email else False or
+            search_term in person.github_username.lower()):
+            matching_github_usernames.append(person.github_username)
+    
+    return matching_github_usernames
 
 def main():
-    initialize_database()
-
-    address_book = load_from_database()
-
-    # Adding contacts
-    person1 = Person("John Doe", "Software Engineer", "john.doe@example.com", "johndoe", "Machine Learning", "ABC Inc.")
-    person2 = Person("Jane Smith", "Data Scientist", "jane.smith@example.com", "janesmith", "Data Analytics", "XYZ Corp.")
-    address_book.add_contact(person1)
-    address_book.add_contact(person2)
-
     parser = argparse.ArgumentParser(description="Address Book CLI")
     parser.add_argument("--list", action="store_true", help="List all entries in the address book")
     parser.add_argument("--roles", action="store_true", help="List all available roles")
-    parser.add_argument("--search-name", help="Search for an entry by name")
-    parser.add_argument("--search-github", help="Search for an entry by GitHub username")
-
+    parser.add_argument("-v", "--verbose", action="store_true", help="Print all matching person data (default is only github username, for scripting")
+    parser.add_argument("--search-name", action="store_true", help="Search for an entry by name")
+    parser.add_argument("--search-github", action = "store_true", help="Search for an entry by GitHub username")
+    # TODO: let this be the DEFAULT option
+    parser.add_argument("query", nargs="+", default="", help="Search for partial matches in name, email, and github-username")
+    
     args = parser.parse_args()
+
+    # init data
+    db = DataAccessor('data/address_book.db')
+    address_book = db.load_from_database()
 
     if args.list:
         print_address_book(address_book)
     elif args.roles:
         print_roles(address_book)
+    elif args.query:
+        results = address_book.search(*args.query)
+
+        if results:
+            for person in results:
+                if args.verbose:
+                    print(person)
+                else:
+                    print(person.github)
+        else:
+            print("No matching entries found.")
     elif args.search_name:
-        results = address_book.search("name", args.search_name)
+        results = address_book.search_field("name", *args.query)
         print("Search by name: ")
         if results:
             for person in results:
@@ -93,7 +71,7 @@ def main():
         else:
             print("No matching entries found.")
     elif args.search_github:
-        results = address_book.search("github", args.search_github)
+        results = address_book.search_field("github", *args.query)
         print("Search by GitHub username: ")
         if results:
             for person in results:
@@ -103,7 +81,7 @@ def main():
     else:
         parser.print_help()
 
-    save_to_database(address_book)
+    db.save_to_database(address_book)
 
 
 if __name__ == '__main__':
