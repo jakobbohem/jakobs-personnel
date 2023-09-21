@@ -39,7 +39,7 @@ def main():
     parser.add_argument("--search-name", action="store_true", help="Search for an entry by name")
     parser.add_argument("--search-github", action = "store_true", help="Search for an entry by GitHub username")
     # TODO: let this be the DEFAULT option
-    parser.add_argument("query", nargs="?", default="", help="Search for partial matches in name, email, and github-username")
+    parser.add_argument("query", nargs="+", default="", help="Search for partial matches in name, email, and github-username")
     
     args = parser.parse_args()
 
@@ -52,7 +52,7 @@ def main():
     elif args.roles:
         print_roles(address_book)
     elif args.query:
-        results = address_book.search(*args.query.split())
+        results = address_book.search(*args.query)
 
         if results:
             for person in results:
@@ -63,7 +63,7 @@ def main():
         else:
             print("No matching entries found.")
     elif args.search_name:
-        results = address_book.search_field("name", *args.query.split())
+        results = address_book.search_field("name", *args.query)
         print("Search by name: ")
         if results:
             for person in results:
@@ -71,7 +71,7 @@ def main():
         else:
             print("No matching entries found.")
     elif args.search_github:
-        results = address_book.search_field("github", *args.query.split())
+        results = address_book.search_field("github", *args.query)
         print("Search by GitHub username: ")
         if results:
             for person in results:

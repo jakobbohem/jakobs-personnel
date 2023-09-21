@@ -72,20 +72,9 @@ class AddressBook:
             if case_insensitive:
                 person_fields = {key: (value.lower() if type(value) == str else None) for key, value in person_fields.items()}
             
-            ## IT FAILS BECAUSE THE 2nd SEARCH TOKEN (w) matches 2+ fields which are then counted against the total number of required TOKENS
-            ## 'John' is never matched for e.g. 'James White'
-
             # Check if all search tokens are present in at least one field
-            if all(any(token in field for field in person_fields.values()) for token in search_tokens):
+            if all(any(token in field for field in person_fields.values() if field is not None) for token in search_tokens):
                 matching_persons.append(person)
-
-            # Loop through all fields and check for token match
-            # for field in person_fields.values():
-            #     if field and any(token in field for token in search_tokens):
-            #         matched_fields.append(True)
-
-            # if len(matched_fields) == len(search_tokens):
-            #     matching_persons.append(person)
                 
         return matching_persons
     
