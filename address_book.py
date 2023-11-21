@@ -15,10 +15,10 @@ class AddressBook:
     def add_contact(self, person):
         if person.email:
             if self.check_existing_email(person.email):
-                print("Person with the same email already exists in database.")
+                print("Person with the same email already exists in database: {}".format(person.email))
                 return
         elif self.check_existing_github(person.github):
-            print("Person with this github-username already exists in database")
+            print("Person with this github-username already exists in database: {}".format(person.github))
 
         self.persons.append(person)
 
