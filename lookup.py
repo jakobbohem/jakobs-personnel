@@ -5,6 +5,15 @@ from person import Person
 from address_book import AddressBook
 from data_accessor import DataAccessor
 
+## Add features:
+# - Sorting by role (requires data cleanup)
+# - Data cleanup (import rules to interpret and categorise data)
+# - Counting people per vendor 'stats'
+# - Counting people per discipline 'roles'
+# - Counting people per mission and role 'mission'
+# - graph some of this?
+# - _all these should likely go in a separate file.py_
+
 
 def print_address_book(address_book):
     for person in address_book.contacts:
