@@ -8,6 +8,9 @@ class Person:
         self.employer = employer
 
     def match_field(self, field, value):
+        return value.lower() in str(getattr(self, field)).lower()
+
+    def match_field_exact(self, field, value):
         return str(getattr(self, field)).lower() == value.lower()
     
     def __str__(self):

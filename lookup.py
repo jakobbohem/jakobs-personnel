@@ -23,7 +23,7 @@ def print_address_book(address_book):
 
 
 def print_roles(address_book):
-    roles = set(person.role for person in address_book.contacts)
+    roles = set(person.role for person in address_book.contacts())
     print("Available Roles:")
     for role in roles:
         print(role)
