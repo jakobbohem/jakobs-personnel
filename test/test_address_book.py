@@ -6,8 +6,8 @@ from address_book import AddressBook
 class AddressBookTests(unittest.TestCase):
     def setUp(self):
         self.address_book = AddressBook()
-        person1 = Person("John Doe", "Software Engineer", "john.doe@example.com", "johndoe", "Machine Learning", "ABC Inc.")
-        person2 = Person("Jane Smith", "Data Scientist", "jane.smith@example.com", "janesmith", "Data Analytics", "XYZ Corp.")
+        person1 = Person("John Doe", "Software Engineer", "john.doe@example.com", "johndoe", "Machine Learning", "ABC Inc.", "TeamA", "Code")
+        person2 = Person("Jane Smith", "Data Scientist", "jane.smith@example.com", "janesmith", "Data Analytics", "XYZ Corp.", "TeamA", "Design")
         self.address_book.add_contact(person1)
         self.address_book.add_contact(person2)
 
