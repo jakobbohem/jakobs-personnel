@@ -38,7 +38,6 @@ class TestDataAccessor(unittest.TestCase):
         test_db.create_table_persons("(name TEXT, role TEXT, email TEXT, github TEXT, work_area TEXT, employer TEXT)")
         self.assertFalse(test_db.check_column_existence(c, 'team'))
 
-        conn.commit()
         conn.close()
 
     def test_update_db_format(self):
@@ -53,7 +52,6 @@ class TestDataAccessor(unittest.TestCase):
         test_db.add_columns_if_not_exist(c, update_columns)
         self.assertTrue(test_db.check_column_existence(c, 'team'))
 
-        conn.commit()
         conn.close()
      
     def test_write_db(self):
@@ -68,6 +66,11 @@ class TestDataAccessor(unittest.TestCase):
         address_book = self.db.load_from_database()
         self.assertIsNotNone(address_book)
     
+    def tearDown(self):
+        print("tearing down..")
+        if os.path.exists(self.filename2):
+            os.remove(self.filename2)
+
     @classmethod
     def tearDownClass(self):
         if os.path.exists(self.filename):

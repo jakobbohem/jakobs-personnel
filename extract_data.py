@@ -30,8 +30,8 @@ def get_person(github_username, name_ado, role, company, team = None, craft = No
 
 def extract_person_data(table_text, company):
     persons = []
-    ln_match = re.compile(r"\| \[`([^`]+)`\]\(https:\/\/github\.com\/[^)]+\)\s*\|\s*([^|]+)\s*+\| ([^\n|]+)\|\s*([\w\s]+)\s*\|\s*([\w\s]+)\s*\|")
-    ln_match_legacy = re.compile(r"\| \[`([^`]+)`\]\(https:\/\/github\.com\/[^)]+\)\s*\|\s*([^|]+) +\| ([^\n|]+)")
+    ln_match = re.compile(r"\|\s*\[`([^`]+)`\]\(https:\/\/github\.com\/[^)]+\)\s*\|\s*([^|]+)\s*+\| ([^\n|]+)\|\s*([\w\s]+)\s*\|\s*([\w\s]+)\s*\|")
+    ln_match_legacy = re.compile(r"\|\s*\[`([^`]+)`\]\(https:\/\/github\.com\/[^)]+\)\s*\|\s*([^|]+) +\| ([^\n|]+)")
 
 
     lines = table_text.strip().split("\n")

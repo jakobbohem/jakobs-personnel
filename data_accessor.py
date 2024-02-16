@@ -7,12 +7,15 @@ class DataAccessor:
     def __init__(self, dbfile, create_table=True):
         self.dbfile = get_absolute(dbfile)
         self.table_name = "persons" # should there ever be more?
-        print(f"debug:: DB-file {self.dbfile}")
+        # print(f"debug:: DB-file {self.dbfile}")
         if(create_table):
             self.create_table_persons()
 
-            update_columns = [('team','TEXT'), ('craft', 'TEXT')]
-            self.add_columns_if_not_exist(c, update_columns)
+            additional_columns = [('team','TEXT'), ('craft', 'TEXT')]
+            conn = sqlite3.connect(self.dbfile)
+            c = conn.cursor()
+            self.add_columns_if_not_exist(c, additional_columns)
+            conn.close()
 
     # def initialize_database():
     def create_table_persons(self, columns="(name TEXT, role TEXT, email TEXT, github TEXT, work_area TEXT, employer TEXT, team TEXT, craft TEXT)"):
@@ -61,8 +64,6 @@ class DataAccessor:
     def check_column_existence(self, cursor, column_name):
         cursor.execute(f"PRAGMA table_info({self.table_name})")
         columns = cursor.fetchall()
-        for col in columns:
-            print(col)
         return any(column[1] == column_name for column in columns)
 
     def add_columns_if_not_exist(self, cursor, columns):

@@ -46,6 +46,13 @@
       "request": "launch",
       "program": "${workspaceFolder}/extract_data.py",
       "args": []
+    },
+    {
+      "name": "PLOT (craft)",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/analyze.py",
+      "args": ["--graph=craft"]
     }
   ]
 }
