@@ -46,6 +46,7 @@ def main():
     parser.add_argument("--roles", action="store_true", help="List all available roles")
     parser.add_argument("-v", "--verbose", action="store_true", help="Print all matching person data (default is only github username, for scripting")
     parser.add_argument("-m", "--email", action="store_true", help="Print e-mail address (default is only github username")
+    parser.add_argument("-gh", "--github-prs", action="store_true", help="Show user's open and merged PRs")
     parser.add_argument("--search-name", action="store_true", help="Search for an entry by name")
     parser.add_argument("--search-github", action = "store_true", help="Search for an entry by GitHub username")
     # TODO: let this be the DEFAULT option
@@ -74,6 +75,9 @@ def main():
                     print(person.github)
         else:
             print("No matching entries found.")
+    elif args.github_prs:
+        # // open a browser with the user's open and recently closed PRs (URL should be fine)
+        print ("todo : implement github-prs")
     elif args.search_name:
         results = address_book.search_field("name", *args.query)
         print("Search by name: ")
