@@ -63,9 +63,14 @@ def main():
     elif args.roles:
         print_roles(address_book)
     elif args.query:
+        ## query is now mandatory...
         results = address_book.search(*args.query)
 
         if results:
+            if args.github_prs:
+                import webbrowser
+                webbrowser.open(address_book.get_github_prs_url(args.query))
+            
             for person in results:
                 if args.verbose:
                     print(person)
@@ -75,9 +80,7 @@ def main():
                     print(person.github)
         else:
             print("No matching entries found.")
-    elif args.github_prs:
-        # // open a browser with the user's open and recently closed PRs (URL should be fine)
-        print ("todo : implement github-prs")
+
     elif args.search_name:
         results = address_book.search_field("name", *args.query)
         print("Search by name: ")
