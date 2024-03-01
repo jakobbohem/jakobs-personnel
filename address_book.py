@@ -63,19 +63,9 @@ class AddressBook:
     def set_search_params(self, case_insensitive):
         self.case_insensitive_search = case_insensitive
 
-    # case_insensitive call BROKEN, add test and consider setting it separately?
-    # def search(self, search_query):
-    #     if search_query.is_a(list):
-    #         self.search(*search_query)
-    #     elif search_query.is_a(str):
-    #         self.search(*search_query.split(" "))
-    #     else:
-    #         print("Unknown search query format, return!")
-
     def search(self, *search_tokens):
         # if it's a single string containing spaces, assume to split it
         if len(search_tokens) == 1 and type(search_tokens[0]) is str:
-            print(f"splitting search query: {search_tokens}")
             search_tokens = search_tokens[0].split(" ")
         matching_persons = []
             
