@@ -35,10 +35,13 @@ class AddressBook:
         return results
 
     def get_github_prs_url(self, search_tokens):
+        import time
         results = self.search(*search_tokens)
         person = results[0]
+        daysago = 21
+        cutoff_date = time.strftime('%Y-%m-%d', time.localtime(time.time()-3600*24*daysago))
         print(f"... opening github.com PRs for '{person.name}'")
-        gh_query=f"is:pr+updated:>=2024-02-15+author:{person.github}" #.replace(':', '%3A')
+        gh_query=f"is:pr+updated:>={cutoff_date}+author:{person.github}" #.replace(':', '%3A')
         url = f"https://github.com/Mojang/Spicewood/pulls?q={gh_query}"
         return url
         
