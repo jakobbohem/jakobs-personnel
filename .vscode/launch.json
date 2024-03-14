@@ -5,12 +5,17 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Python: Current File",
+      "name": "Python: test lookup.py",
       "type": "python",
       "request": "launch",
-      "program": "${file}",
+      "program": "${workspaceFolder}/lookup.py",
       "console": "integratedTerminal",
-      "justMyCode": true
+      "justMyCode": true,
+      "escapeArgsForShell":false,
+      "args": [
+        "--github-prs",
+        "Gates Matt"
+      ]
     },
     {
       "name": "List all entries",
@@ -25,28 +30,9 @@
       "name": "List available roles",
       "type": "python",
       "request": "launch",
-      "program": "${workspaceFolder}/lookup.py",
+      "program": "${workspaceFolder}/analyze.py",
       "args": [
         "--roles"
-      ]
-    },
-    {
-      "name": "John W wont",
-      "type": "python",
-      "request": "launch",
-      "program": "${workspaceFolder}/lookup.py",
-      "args": [
-        "John w"
-      ]
-    },
-    {
-      "name": "Search by GitHub username",
-      "type": "python",
-      "request": "launch",
-      "program": "${workspaceFolder}/lookup.py",
-      "args": [
-        "--search-github",
-        "johndoe"
       ]
     },
     {
@@ -64,6 +50,13 @@
       "request": "launch",
       "program": "${workspaceFolder}/extract_data.py",
       "args": []
+    },
+    {
+      "name": "PLOT (craft)",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/analyze.py",
+      "args": ["--graph=craft"]
     }
   ]
 }

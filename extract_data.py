@@ -13,29 +13,39 @@ from data_accessor import DataAccessor
 #         self.company = company
 #         self.email = email
 
-def extract_person_data(table_text, company_name):
+def get_person(github_username, name_ado, role, company, team = None, craft = None):            
+    name_match = re.search(r"@<([^>]+)>", name_ado)
+    email = None
+    if name_match:
+        name = name_match.group(1)
+    else:
+        email_match = re.search(r"\[([^]]+)\]\(mailto:([^)]+)\)", name_ado)
+        if email_match:
+            name, email = email_match.groups()
+        else:
+            name = name_ado.strip()
+    team = team and team.strip() or None
+    craft = craft and craft.strip() or None
+    return Person(name, role.strip(), email, github_username.strip(), "[]", company, team, craft)
+
+def extract_person_data(table_text, company):
     persons = []
-    
+    ln_match = re.compile(r"\|\s*\[`([^`]+)`\]\(https:\/\/github\.com\/[^)]+\)\s*\|\s*([^|]+)\s*\|([^\n|]+)\|\s*([\w\s]+)\s*\|\s*([\w\s]+)\s*\|")
+    ln_match_legacy = re.compile(r"\|\s*\[`([^`]+)`\]\(https:\/\/github\.com\/[^)]+\)\s*\|\s*([^|]+) +\| ([^\n|]+)")
+
+
     lines = table_text.strip().split("\n")
     for line in lines:
-        match = re.match(r"\| \[`([^`]+)`\]\(https:\/\/github\.com\/[^)]+\)\s*\|\s*([^|]+) +\| ([^\n|]+)", line.strip())
+        match = ln_match.match(line.strip())
+        match_legacy = ln_match_legacy.match(line.strip())
         if match:
-            github_username, name_ado, role = match.groups()
-            
-            name_match = re.search(r"@<([^>]+)>", name_ado)
-            email = None
-            if name_match:
-                name = name_match.group(1)
-            else:
-                email_match = re.search(r"\[([^]]+)\]\(mailto:([^)]+)\)", name_ado)
-                if email_match:
-                    name, email = email_match.groups()
-                else:
-                    name = name_ado.strip()
-
-            person = Person(name, role.strip(), email, github_username.strip(), "[]", company_name)
-            persons.append(person)
-    
+            github_username, name_ado, role, team, craft = match.groups()
+            persons.append(get_person(github_username, name_ado, role, company, team, craft))
+        elif match_legacy:
+            github_username, name_ado, role = match_legacy.groups()
+            persons.append(get_person(github_username, name_ado, role, company))
+        else:
+            print(f"could not match line: {line}, will not write to db.")
     return persons
 
 def extract_person_data_from_tables(markdown_text):

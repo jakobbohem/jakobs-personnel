@@ -12,8 +12,12 @@ This will write all entries to `data/address_book.db`
 
 (#TODO: pass the data file name to the update script)
 
+3. the functionality of `lookup.py` and `analyze.py` has some requirements on python modules (such as matplotlib for plotting data) - to set up the local env requirements with pip run
+```
+pip install -r requirements.txt
+```
 
-3. Now call the Python script from your Python 3 exe e.g.
+4. Now call the Python script from your Python 3 exe e.g.
 ```
 py lookup.py Name
 ```

@@ -3,6 +3,7 @@ from person import Person
 class AddressBook:
     def __init__(self):
         self.persons = []
+        self.case_insensitive_search = True
 
     # get/set
     def contacts(self):
@@ -33,6 +34,17 @@ class AddressBook:
         results = [contact for contact in self.persons if contact.match_field(field, value)]
         return results
 
+    def get_github_prs_url(self, search_tokens):
+        import time
+        results = self.search(*search_tokens)
+        person = results[0]
+        daysago = 21
+        cutoff_date = time.strftime('%Y-%m-%d', time.localtime(time.time()-3600*24*daysago))
+        print(f"... opening github.com PRs for '{person.name}'")
+        gh_query=f"is:pr+updated:>={cutoff_date}+author:{person.github}" #.replace(':', '%3A')
+        url = f"https://github.com/Mojang/Spicewood/pulls?q={gh_query}"
+        return url
+        
     # TODO: smarter 'searchable' containers for the Person:s
     def search_old(self, *search_tokens):
             results = []
@@ -51,11 +63,17 @@ class AddressBook:
                     results.append(person)
             return results
     
-    def search(self, *search_tokens, case_insensitive=True):
+    def set_search_params(self, case_insensitive):
+        self.case_insensitive_search = case_insensitive
+
+    def search(self, *search_tokens):
+        # if it's a single string containing spaces, assume to split it
+        if len(search_tokens) == 1 and type(search_tokens[0]) is str:
+            search_tokens = search_tokens[0].split(" ")
         matching_persons = []
             
         # Convert search tokens to lowercase if case_insensitive is True
-        if case_insensitive:
+        if self.case_insensitive_search:
             search_tokens = [token.lower() for token in search_tokens]
 
         for person in self.persons:
@@ -69,7 +87,7 @@ class AddressBook:
                 'employer': person.employer
             }
 
-            if case_insensitive:
+            if self.case_insensitive_search:
                 person_fields = {key: (value.lower() if type(value) == str else None) for key, value in person_fields.items()}
             
             # Check if all search tokens are present in at least one field
