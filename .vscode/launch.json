@@ -56,7 +56,13 @@
       "type": "python",
       "request": "launch",
       "program": "${workspaceFolder}/analyze.py",
-      "args": ["--graph=craft"]
+      "args": ["roles", "--graph=craft"]
+    } ,
+    {
+      "name": "PLOT (testme)",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/test_plot.py"
     }
   ]
 }
