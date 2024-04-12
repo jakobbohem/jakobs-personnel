@@ -68,6 +68,7 @@ def main():
 
         if results:
             if args.github_prs:
+                # consider adding option for outputting to console (gh CLI)
                 import webbrowser
                 webbrowser.open(address_book.get_github_prs_url(args.query))
             

@@ -56,13 +56,14 @@
       "type": "python",
       "request": "launch",
       "program": "${workspaceFolder}/analyze.py",
-      "args": ["roles", "--graph=craft"]
-    } ,
+      "args": ["personnel", "--graph=craft"]
+    },
     {
-      "name": "PLOT (testme)",
+      "name": "Analyze (github commits)",
       "type": "python",
       "request": "launch",
-      "program": "${workspaceFolder}/test_plot.py"
-    }
+      "program": "${workspaceFolder}/analyze.py",
+      "args": ["github", "jakobbohem", "--graph=graph"]
+    } 
   ]
 }
