@@ -34,16 +34,19 @@ class AddressBook:
     def search_field(self, field, value):
         results = [contact for contact in self.persons if contact.match_field(field, value)]
         return results
+    
+    def filter_field(self, field, value):
+        # check/add mission (value is list), required for now
+        # WARN: ONLY code for now (needed for graph tool)
+        if not type(value) == list:
+            value = [value]
+
+        # https://realpython.com/python-lambda/
+        results = [contact for contact in self.persons if contact.filter_by(field, value) and contact.match_field_exact('craft', 'code')]
+        return results
 
     def get_github_prs_url(self, search_tokens):
-        # import time
         results = self.search(*search_tokens)
-        # person = results[0]
-        # daysago = 21
-        # cutoff_date = time.strftime('%Y-%m-%d', time.localtime(time.time()-3600*24*daysago))
-        # print(f"... opening github.com PRs for '{person.name}'")
-        # gh_query=f"is:pr+updated:>={cutoff_date}+author:{person.github}" #.replace(':', '%3A')
-        # url = f"https://github.com/Mojang/Spicewood/pulls?q={gh_query}"
         return get_github_prs_url(results[0])
     
     def set_search_params(self, case_insensitive):

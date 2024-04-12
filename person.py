@@ -8,12 +8,20 @@ class Person:
         self.employer = employer
         self.team = team
         self.craft = craft
+        # self.active = True # make sure to separate current and previous memberse (no team == not active)
+
+    def is_active(self):
+        return not not self.team
 
     def match_field(self, field, value):
         return value.lower() in str(getattr(self, field)).lower()
 
     def match_field_exact(self, field, value):
         return str(getattr(self, field)).lower() == value.lower()
+    
+    def filter_by(self, field, options):
+        attribute_value = str(getattr(self, field)).lower()
+        return any(attribute_value == option.lower() for option in options)
     
     def __str__(self):
         email = f" ({self.email})" if self.email else ""

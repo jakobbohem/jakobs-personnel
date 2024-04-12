@@ -15,7 +15,7 @@ class GraphTool:
         # all the commits are in the data blob
 
         # FILTERED! extract the present users/contributors
-        users = set(item['author']['login'] for item in blob if item['author']['login'] in userfilter)
+        users = set(item['author']['login'] for item in blob if (item['author']['login'] in userfilter or not userfilter))
 
         # Split the data by user
         split_data = {user: [item for item in blob if item['author']['login'] == user] for user in users}
@@ -25,7 +25,7 @@ class GraphTool:
 
         # Plotting (doubel axes)
         # Create a figure and primary axes
-        fig, ax1 = plt.subplots()
+        fig, ax1 = plt.subplots(figsize=(10, 8))
         bar_width = 0.35
         x = np.arange(len(users))
         ax1.bar(x - bar_width/2, user_counts.values(), bar_width, color='b', label='merged')

@@ -27,12 +27,12 @@
       ]
     },
     {
-      "name": "List available roles",
+      "name": "Analyze (roles)",
       "type": "python",
       "request": "launch",
       "program": "${workspaceFolder}/analyze.py",
       "args": [
-        "--roles"
+        "roles", "--craft=code"
       ]
     },
     {
@@ -52,6 +52,13 @@
       "args": []
     },
     {
+      "name": "process Excel (test)",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/process_excel.py",
+      "args": []
+    },
+    {
       "name": "PLOT (craft)",
       "type": "python",
       "request": "launch",
@@ -63,7 +70,7 @@
       "type": "python",
       "request": "launch",
       "program": "${workspaceFolder}/analyze.py",
-      "args": ["github", "jakobbohem", "--graph=graph"]
+      "args": ["github", "gameplay", "--graph=graph"]
     } 
   ]
 }

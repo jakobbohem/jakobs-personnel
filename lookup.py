@@ -47,6 +47,7 @@ def main():
     parser.add_argument("-v", "--verbose", action="store_true", help="Print all matching person data (default is only github username, for scripting")
     parser.add_argument("-m", "--email", action="store_true", help="Print e-mail address (default is only github username")
     parser.add_argument("-gh", "--github-prs", action="store_true", help="Show user's open and merged PRs")
+    parser.add_argument("-ado", "--workitems", action="store_true", help="Show user's ongoing work tasks (in ADO)")
     parser.add_argument("--search-name", action="store_true", help="Search for an entry by name")
     parser.add_argument("--search-github", action = "store_true", help="Search for an entry by GitHub username")
     # TODO: let this be the DEFAULT option
@@ -67,6 +68,8 @@ def main():
         results = address_book.search(*args.query)
 
         if results:
+            if args.workitems:
+                print("TODO: set up link to filter with all recent tickets for user: {}".format(results[0].person))
             if args.github_prs:
                 # consider adding option for outputting to console (gh CLI)
                 import webbrowser
