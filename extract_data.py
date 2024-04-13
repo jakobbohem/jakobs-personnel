@@ -5,15 +5,7 @@ from person import *
 import address_book
 from data_accessor import DataAccessor
 
-# class Person:
-#     def __init__(self, github_username, name, role, company, email=None):
-#         self.github_username = github_username
-#         self.name = name
-#         self.role = role
-#         self.company = company
-#         self.email = email
-
-def get_person(github_username, name_ado, role, company, team = None, craft = None):            
+def get_person(github_username, name_ado, role, company, team = None, craft = None, alumn = None):            
     name_match = re.search(r"@<([^>]+)>", name_ado)
     email = None
     if name_match:
@@ -26,9 +18,12 @@ def get_person(github_username, name_ado, role, company, team = None, craft = No
             name = name_ado.strip()
     team = team and team.strip() or None
     craft = craft and craft.strip() or None
-    return Person(name, role.strip(), email, github_username.strip(), "[]", company, team, craft)
+    NoTeamSet = lambda team: not team or len(team) == 0 or team.lower() == "team"
+    alumn = alumn and alumn or NoTeamSet(team)
 
-def extract_person_data(table_text, company):
+    return Person(name, role.strip(), email, github_username.strip(), "[]", company, team, craft, alumn)
+
+def extract_person_data(table_text, company, alumn = None):
     persons = []
     ln_match = re.compile(r"\|\s*\[`([^`]+)`\]\(https:\/\/github\.com\/[^)]+\)\s*\|\s*([^|]+)\s*\|([^\n|]+)\|\s*([\w\s]+)\s*\|\s*([\w\s]+)\s*\|")
     ln_match_legacy = re.compile(r"\|\s*\[`([^`]+)`\]\(https:\/\/github\.com\/[^)]+\)\s*\|\s*([^|]+) +\| ([^\n|]+)")
@@ -40,7 +35,7 @@ def extract_person_data(table_text, company):
         match_legacy = ln_match_legacy.match(line.strip())
         if match:
             github_username, name_ado, role, team, craft = match.groups()
-            persons.append(get_person(github_username, name_ado, role, company, team, craft))
+            persons.append(get_person(github_username, name_ado, role, company, team, craft, alumn))
         elif match_legacy:
             github_username, name_ado, role = match_legacy.groups()
             persons.append(get_person(github_username, name_ado, role, company))
@@ -64,8 +59,9 @@ def extract_person_data_from_tables(markdown_text):
             company_name = header_match.group(1)
             company_name = company_name.split("(")[0].strip()  # Extracting the company name from the header
             table_text = table_divide_re.split(table)[2] #[1]  # Removing the header part
+            alumni = any(keyword in company_name.lower() for keyword in ['alumni', 'reference'])
 
-            persons.extend(extract_person_data(table_text, company_name))
+            persons.extend(extract_person_data(table_text, company_name, alumni))
     
         if verbose:
             for person in persons:

@@ -11,14 +11,14 @@ class DataAccessor:
         if(create_table):
             self.create_table_persons()
 
-            additional_columns = [('team','TEXT'), ('craft', 'TEXT')]
+            additional_columns = [('team','TEXT'), ('craft', 'TEXT'), ('alumn', 'BOOL')]
             conn = sqlite3.connect(self.dbfile)
             c = conn.cursor()
             self.add_columns_if_not_exist(c, additional_columns)
             conn.close()
 
     # def initialize_database():
-    def create_table_persons(self, columns="(name TEXT, role TEXT, email TEXT, github TEXT, work_area TEXT, employer TEXT, team TEXT, craft TEXT)"):
+    def create_table_persons(self, columns="(name TEXT, role TEXT, email TEXT, github TEXT, work_area TEXT, employer TEXT, team TEXT, craft TEXT, alumn BOOL)"):
         conn = sqlite3.connect(self.dbfile)
         c = conn.cursor()
         # print("DEBUG")
@@ -39,8 +39,8 @@ class DataAccessor:
         c.execute("DELETE FROM persons")
 
         for person in address_book.contacts():
-            c.execute("INSERT INTO persons VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                    (person.name, person.role, person.email, person.github, person.work_area, person.employer, person.team, person.craft))
+            c.execute("INSERT INTO persons VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    (person.name, person.role, person.email, person.github, person.work_area, person.employer, person.team, person.craft, person.alumn))
 
         conn.commit()
         conn.close()

@@ -1,5 +1,5 @@
 class Person:
-    def __init__(self, name, role, email, github, work_area, employer, team, craft):
+    def __init__(self, name, role, email, github, work_area, employer, team, craft, alumn = False):
         self.name = name
         self.role = role
         self.email = email
@@ -8,10 +8,11 @@ class Person:
         self.employer = employer
         self.team = team
         self.craft = craft
+        self.alumn = alumn
         # self.active = True # make sure to separate current and previous memberse (no team == not active)
 
     def is_active(self):
-        return not not self.team
+        return not self.alumn
 
     def match_field(self, field, value):
         return value.lower() in str(getattr(self, field)).lower()
@@ -25,4 +26,5 @@ class Person:
     
     def __str__(self):
         email = f" ({self.email})" if self.email else ""
-        return f"{self.name}: [{self.github}]{email} at {self.employer} | {self.role} | {self.team} | {self.craft}"
+        alumn = self.alumn and "| [alumn]" or ""
+        return f"{self.name}: [{self.github}]{email} at {self.employer} | {self.role} | {self.team} | {self.craft}{alumn}"
