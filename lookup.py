@@ -79,7 +79,7 @@ def main():
                 if args.verbose:
                     print(person)
                 elif args.email:
-                    print(person.email)
+                    print(f"{person.name}: {person.email}")
                 else:
                     print(person.github)
         else:

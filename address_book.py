@@ -37,7 +37,7 @@ class AddressBook:
     
     def filter_field(self, field, value):
         # check/add mission (value is list), required for now
-        # WARN: ONLY code for now (needed for graph tool)
+        # !!!!WARN!!!!! : ONLY code for now (needed for graph tool)
         if not type(value) == list:
             value = [value]
 

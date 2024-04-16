@@ -8,9 +8,9 @@ from data_accessor import DataAccessor
 from source.grapher.graph_tool import GraphTool
 from source.ghcli import GHCli
 from source.utils import *
+from source.org_utils import get_teams
 from enum import Enum
 
-import sqlite3
 
 # Define an Enum for actions
 class Action(Enum):
@@ -23,7 +23,15 @@ class Action(Enum):
     # ACTION7 = 'run'
 
 def ListPersonnel(address_book, args):
-    print("list w/o filter from database?")
+    print("list people on team '{}'".format(args.filter))
+    # can filter be BOTH team OR role?
+
+    print(" -- WARNING! currently only processes 'craft==code'/ developers --")
+    # if args.team:
+    persons = [p for p in address_book.filter_field("team", get_teams(args.filter))]
+    for index, p in enumerate(persons, start=1):
+        print(f"{index} {p}")
+
     if args.graph:
         graphtool = GraphTool()
         graphtool.plot_persons(column_name=args.graph)
@@ -64,10 +72,10 @@ def ListGitCommits(address_book, args):
         if index + 1 >= 12: break # don't spam the log
 
     if args.graph:
-        from source.org_utils import get_teams
         graphtool = GraphTool()
-        missionLabel = args.filter and args.filter or "world"
-        persons = [p.github for p in address_book.filter_field("team", get_teams(missionLabel))]
+        division_name = args.filter and args.filter or "world"
+        # better label? "{}\n{}".format(p.github, p.name[:15]
+        persons = [p.github for p in address_book.filter_field("team", get_teams(division_name))]
         graphtool.plot_github(blob=json_data, userfilter=persons)
 
 # Map actions to their corresponding functions
@@ -84,6 +92,7 @@ def main():
     parser.add_argument("--craft", default="", help="Filter input by roles variable (e.g. 'code, art, production')")
     parser.add_argument("--teams", default="", help="Filter input by teams (also checks for mission, e.g. 'world', 'gameplay', or 'tech-online')")
     parser.add_argument("-g", "--graph", default="", help="Graph the split of personnel data along some vector ('craft', 'team', 'organisation')")
+    parser.add_argument("-m", "--email", action="store_true", help="get a list of e-mail addresses to paste into Outlook, for quick e-mail invite setup!")
     parser.add_argument("action", nargs="?", type=Action, choices=list(Action), help="action for desired Hermes artifact (for UE, or UE-xsx, UE-switch etc)\nassociated symbols are handled as 1 artifact")
     # // todo: add comma separated list filer?
     parser.add_argument("filter", nargs="?", default="", help="filter output by e.g. Scrum team, role or something else")
