@@ -18,21 +18,23 @@
       ]
     },
     {
-      "name": "List all entries",
+      "name": "List and copy team email",
       "type": "python",
       "request": "launch",
       "program": "${workspaceFolder}/lookup.py",
-      "args": [
-        "--list"
+      "args": ["craft=Code", "employer=Double11"
+        , "--list"
+        , "-cc"
+        , "-m"
       ]
     },
     {
-      "name": "List available roles",
+      "name": "Analyze (roles)",
       "type": "python",
       "request": "launch",
       "program": "${workspaceFolder}/analyze.py",
       "args": [
-        "--roles"
+        "roles", "--craft=code"
       ]
     },
     {
@@ -52,11 +54,32 @@
       "args": []
     },
     {
+      "name": "Update (data & properties)",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/bootstrap.py",
+      "args": ["--noextract"]
+    },
+    {
+      "name": "github commits/PR",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/lookup.py",
+      "args": ["Gabriel Mene", "-gh"]
+    },
+    {
       "name": "PLOT (craft)",
       "type": "python",
       "request": "launch",
       "program": "${workspaceFolder}/analyze.py",
-      "args": ["--graph=craft"]
-    }
+      "args": ["personnel", "world", "--graph=craft"]
+    },
+    {
+      "name": "Analyze (github commits)",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/analyze.py",
+      "args": ["github", "gameplay", "--graph=graph"]
+    } 
   ]
 }

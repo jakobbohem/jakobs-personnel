@@ -1,6 +1,12 @@
-# ignore rawdata folder with proprietary information
+# ignore rawdata folder and code folders with proprietary information
 data/address_book.db
+data/organisation_data.db
 rawdata/
+wip/
+
+# ignore ADO query files with proprietary naming
+data/user_stories*.wiql
+data/user_stories*.wiq
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
