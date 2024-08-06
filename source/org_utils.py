@@ -1,10 +1,8 @@
 
-# TODO: serialise this data!!
-org_mapping = {
-    'world': ['jungle', 'tundra', 'badlands', 'lava', 'mesa', 'desert']
-    ,'gameplay': ['axolotl', 'bee', 'goat', 'blacksmith', 'finesse']
-    ,'tech-online': ['enablers', 'devexperience', 'playerjourney', 'services', 'spiceops']
-}
+import source.data_manager as data_manager
 
-def get_teams(division_name):
-    return org_mapping[division_name.lower()]
+org_settings_file = "data/organisation_data.json"
+data = data_manager.read_data_from_file(org_settings_file)
+
+def get_teams(key):
+    return data['teams'][key.lower()]

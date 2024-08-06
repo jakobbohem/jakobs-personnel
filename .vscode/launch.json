@@ -18,12 +18,14 @@
       ]
     },
     {
-      "name": "List all entries",
+      "name": "List and copy team email",
       "type": "python",
       "request": "launch",
       "program": "${workspaceFolder}/lookup.py",
-      "args": [
-        "--list"
+      "args": ["craft=Code", "employer=Double11"
+        , "--list"
+        , "-cc"
+        , "-m"
       ]
     },
     {
@@ -52,18 +54,25 @@
       "args": []
     },
     {
-      "name": "process Excel (test)",
+      "name": "Update (data & properties)",
       "type": "python",
       "request": "launch",
-      "program": "${workspaceFolder}/process_excel.py",
-      "args": []
+      "program": "${workspaceFolder}/bootstrap.py",
+      "args": ["--noextract"]
+    },
+    {
+      "name": "github commits/PR",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/lookup.py",
+      "args": ["Gabriel Mene", "-gh"]
     },
     {
       "name": "PLOT (craft)",
       "type": "python",
       "request": "launch",
       "program": "${workspaceFolder}/analyze.py",
-      "args": ["personnel", "--graph=craft"]
+      "args": ["personnel", "world", "--graph=craft"]
     },
     {
       "name": "Analyze (github commits)",

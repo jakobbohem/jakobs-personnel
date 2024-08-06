@@ -24,11 +24,11 @@ class Action(Enum):
 
 def ListPersonnel(address_book, args):
     print("list people on team '{}'".format(args.filter))
-    # can filter be BOTH team OR role?
 
     print(" -- WARNING! currently only processes 'craft==code'/ developers --")
     # if args.team:
-    persons = [p for p in address_book.filter_field("team", get_teams(args.filter))]
+    persons = address_book.filter_field(team=get_teams(args.filter))
+    # persons = ##[p for p in address_book.filter_field("team", get_teams(args.filter))]
     for index, p in enumerate(persons, start=1):
         print(f"{index} {p}")
 
@@ -37,7 +37,7 @@ def ListPersonnel(address_book, args):
         graphtool.plot_persons(column_name=args.graph)
 
 def ListTeams(address_book, args):
-    results = address_book.filter_field("team", args.team)
+    results = address_book.filter_field(team=args.team)
     print("Team members {}".format(args.team))
     print_display_persons(results)
 
@@ -75,7 +75,7 @@ def ListGitCommits(address_book, args):
         graphtool = GraphTool()
         division_name = args.filter and args.filter or "world"
         # better label? "{}\n{}".format(p.github, p.name[:15]
-        persons = [p.github for p in address_book.filter_field("team", get_teams(division_name))]
+        persons = [p.github for p in address_book.filter_field(team=get_teams(division_name))]
         graphtool.plot_github(blob=json_data, userfilter=persons)
 
 # Map actions to their corresponding functions

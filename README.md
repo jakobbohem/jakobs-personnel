@@ -22,6 +22,17 @@ pip install -r requirements.txt
 py lookup.py Name
 ```
 
+# Notes:
+to import address book data from a .md source file formatted as an md-table
+run 
+```
+extract_data.py
+```
+after setting up the path to the .md source file to read from, by default, the script will look for source data in the `rawdata/` folder
+
+some properties will require data in a `data/organisation_data.json` properties file. To update this file with appropriate .json data fields, run `bootstrap.py`
+
+
 
 # Improvements
 

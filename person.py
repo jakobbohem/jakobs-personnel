@@ -2,7 +2,7 @@ class Person:
     def __init__(self, name, role, email, github, work_area, employer, team, craft, alumn = False):
         self.name = name
         self.role = role
-        self.email = email
+        self.email = email or ''
         self.github = github
         self.work_area = work_area
         self.employer = employer
@@ -20,10 +20,21 @@ class Person:
     def match_field_exact(self, field, value):
         return str(getattr(self, field)).lower() == value.lower()
     
+    # default filter, hold:
     def filter_by(self, field, options):
+        if not hasattr(self, field): return False
         attribute_value = str(getattr(self, field)).lower()
         return any(attribute_value == option.lower() for option in options)
     
+    ## outputting to console:
+    def format_str(self, formatstring):
+        """Format the object based on the given format string."""
+        if not formatstring: return self
+        try:
+            return formatstring.format(**vars(self))
+        except KeyError as e:
+            raise ValueError(f"Invalid format string: missing attribute {e}")
+
     def __str__(self):
         email = f" ({self.email})" if self.email else ""
         alumn = self.alumn and "| [alumn]" or ""

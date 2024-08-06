@@ -1,3 +1,4 @@
+from typing import Any
 from person import Person
 from source.utils import *
 
@@ -35,19 +36,11 @@ class AddressBook:
         results = [contact for contact in self.persons if contact.match_field(field, value)]
         return results
     
-    def filter_field(self, field, value):
-        # check/add mission (value is list), required for now
-        # !!!!WARN!!!!! : ONLY code for now (needed for graph tool)
-        if not type(value) == list:
-            value = [value]
-
+    def filter_field(self, **kwargs):
+        included = lambda contact: all([contact.filter_by(attr, value) for attr, value in kwargs.items()])
         # https://realpython.com/python-lambda/
-        results = [contact for contact in self.persons if contact.filter_by(field, value) and contact.match_field_exact('craft', 'code')]
+        results = [contact for contact in self.persons if included(contact)]
         return results
-
-    def get_github_prs_url(self, search_tokens):
-        results = self.search(*search_tokens)
-        return get_github_prs_url(results[0])
     
     def set_search_params(self, case_insensitive):
         self.case_insensitive_search = case_insensitive
